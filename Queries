@@ -1,0 +1,144 @@
+-- ============================================================
+-- Project: Credit Portfolio Risk Analysis Using SQL
+-- Author:  Hannah (Huong) Tran
+-- Description: This script analyses default rates across loan
+--              grades using the Lending Club dataset (2007-2018).
+--              Frameworks applied: Probability of Default (PD),
+--              Expected Loss (EL), 5 Cs of Credit (CFA Level I & II)
+-- ============================================================
+
+
+-- ============================================================
+-- QUERY 1: What is the overall size and shape of the portfolio?
+-- ============================================================
+-- Context: Before analysing default, we need to understand the
+-- baseline — how many loans, how much exposure, and how many
+-- unique grades and statuses exist.
+
+SELECT
+    COUNT(*)                                        AS total_loans,
+    ROUND(SUM(loan_amnt) / 1000000.0, 2)           AS total_exposure_millions,
+    ROUND(AVG(loan_amnt), 0)                        AS avg_loan_amount,
+    COUNT(DISTINCT grade)                           AS num_grades,
+    COUNT(DISTINCT loan_status)                     AS num_loan_statuses
+FROM accepted_2007_to_2018Q4;
+
+
+-- ============================================================
+-- QUERY 2: How is the portfolio distributed across risk grades?
+-- ============================================================
+-- Context: Concentration in certain grades creates systemic risk.
+-- A well-diversified portfolio should not be over-exposed to
+-- any single grade — especially high-risk ones (E, F, G).
+
+SELECT
+    grade,
+    COUNT(*)                                                                                        AS total_loans,
+    ROUND(100.0 * COUNT(*) / (SELECT COUNT(*) FROM accepted_2007_to_2018Q4), 2)                    AS pct_of_loans,
+    ROUND(SUM(loan_amnt) / 1000000.0, 2)                                                           AS exposure_millions,
+    ROUND(100.0 * SUM(loan_amnt) / (SELECT SUM(loan_amnt) FROM accepted_2007_to_2018Q4), 2)        AS pct_of_exposure
+FROM accepted_2007_to_2018Q4
+GROUP BY grade
+ORDER BY grade;
+
+
+-- ============================================================
+-- QUERY 3: What is the default rate by grade?
+-- ============================================================
+-- Context: 'Charged Off' = lender has given up recovering the loan.
+-- 'Default' = borrower has stopped paying but recovery not yet closed.
+-- We capture both as bad outcomes, alongside Fully Paid as good.
+-- This gives a cleaner picture than Charged Off alone.
+
+SELECT
+    grade,
+    COUNT(*)                                                                            AS total_loans,
+    SUM(CASE WHEN loan_status = 'Fully Paid'   THEN 1 ELSE 0 END)                      AS fully_paid,
+    SUM(CASE WHEN loan_status = 'Charged Off'  THEN 1 ELSE 0 END)                      AS charged_off,
+    SUM(CASE WHEN loan_status = 'Default'      THEN 1 ELSE 0 END)                      AS defaulted,
+    SUM(CASE WHEN loan_status NOT IN ('Fully Paid', 'Current') THEN 1 ELSE 0 END)      AS total_bad_loans,
+    ROUND(100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS charge_off_rate_pct,
+    ROUND(100.0 * SUM(CASE WHEN loan_status NOT IN ('Fully Paid', 'Current') THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS total_bad_rate_pct
+FROM accepted_2007_to_2018Q4
+GROUP BY grade
+ORDER BY grade;
+
+
+-- ============================================================
+-- QUERY 4: Is interest rate pricing the risk correctly?
+-- ============================================================
+-- Context: In credit markets, higher risk should command higher yield.
+-- If the interest rate spread over the default rate is negative,
+-- the lender is not being adequately compensated — under-priced risk.
+-- This is equivalent to a negative risk-adjusted spread in CFA fixed income.
+
+SELECT
+    grade,
+    ROUND(AVG(int_rate), 2)                                                             AS avg_interest_rate,
+    ROUND(100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS default_rate_pct,
+    ROUND(AVG(int_rate) - 100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS risk_adjusted_spread,
+    CASE
+        WHEN AVG(int_rate) > 100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END) / COUNT(*)
+        THEN 'Adequately Priced'
+        ELSE 'Under-Priced'
+    END                                                                                 AS pricing_assessment
+FROM accepted_2007_to_2018Q4
+GROUP BY grade
+ORDER BY grade;
+
+
+-- ============================================================
+-- QUERY 5: What is the Expected Loss by grade?
+-- ============================================================
+-- Context: Expected Loss (EL) = PD x LGD x EAD is the core
+-- credit risk metric. Here we approximate:
+--   PD  = Charge-off rate
+--   EAD = Total loan exposure per grade
+--   LGD = Assumed 100% (no recovery modelled — conservative)
+-- This gives the estimated dollar loss attributable to each grade.
+-- RANK() identifies which grade causes the most damage in absolute terms.
+
+SELECT
+    grade,
+    ROUND(SUM(loan_amnt) / 1000000.0, 2)                                               AS exposure_millions,
+    ROUND(AVG(int_rate), 2)                                                             AS avg_interest_rate,
+    ROUND(100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS PD_pct,
+    ROUND(
+        SUM(loan_amnt) / 1000000.0 *
+        SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END) * 1.0 / COUNT(*),
+    2)                                                                                  AS expected_loss_millions,
+    RANK() OVER (
+        ORDER BY SUM(loan_amnt) / 1000000.0 *
+        SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) DESC
+    )                                                                                   AS risk_rank
+FROM accepted_2007_to_2018Q4
+GROUP BY grade
+ORDER BY expected_loss_millions DESC;
+
+
+-- ============================================================
+-- QUERY 6: Drill down into the highest-risk grade by sub-grade
+-- ============================================================
+-- Context: After identifying the worst-performing grade from Query 5,
+-- we drill into its sub-grades (e.g. D1 to D5) to find which
+-- sub-segments are driving the default rate up.
+-- Replace 'D' below with whichever grade ranked #1 in Query 5.
+
+SELECT
+    sub_grade,
+    COUNT(*)                                                                            AS total_loans,
+    ROUND(AVG(loan_amnt), 0)                                                            AS avg_loan_amount,
+    ROUND(AVG(int_rate), 2)                                                             AS avg_interest_rate,
+    ROUND(AVG(dti), 2)                                                                  AS avg_dti,
+    ROUND(AVG(annual_inc), 0)                                                           AS avg_annual_income,
+    ROUND(100.0 * SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END)
+        / COUNT(*), 2)                                                                  AS default_rate_pct
+FROM accepted_2007_to_2018Q4
+WHERE grade = 'D'
+GROUP BY sub_grade
+ORDER BY sub_grade;
