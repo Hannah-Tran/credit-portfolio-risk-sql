@@ -60,4 +60,4 @@ credit-portfolio-risk-sql/
 MSc Banking & Finance with Distinction — Queen Mary University of London
 CFA Levels I & II | CeMAP in progress
 
-[LinkedIn]([https://linkedin.com/in/YOUR-LINK](https://www.linkedin.com/posts/priyanka-banerjee-3005_let-us-look-into-how-sql-problem-solving-share-7361474146779738112-VVCe/) | [GitHub]()
+[LinkedIn](https://www.linkedin.com/posts/priyanka-banerjee-3005_let-us-look-into-how-sql-problem-solving-share-7361474146779738112-VVCe/) | [GitHub](https://github.com/Hannah-Tran)
