@@ -57,7 +57,8 @@ credit-portfolio-risk-sql/
 
 ## 💼 Author
 **Hannah (Huong) Tran**
-MSc Banking & Finance with Distinction — Queen Mary University of London
-CFA Levels I & II | CeMAP in progress
+Financial Analysis
+MSc Banking & Finance with Distinction
+CFA Levels I & II cleared| 
 
 [LinkedIn](https://www.linkedin.com/posts/priyanka-banerjee-3005_let-us-look-into-how-sql-problem-solving-share-7361474146779738112-VVCe/) | [GitHub](https://github.com/Hannah-Tran)
