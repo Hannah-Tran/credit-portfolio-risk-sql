@@ -11,21 +11,6 @@ To simulate a credit risk analyst's approach to portfolio surveillance: identify
 - GitHub (project documentation)
 - Dataset: [Lending Club Loan Data 2007–2018](https://www.kaggle.com/datasets/wordsforthewise/lending-club) via Kaggle
 
-## 📂 Folder Structure
-
-credit-portfolio-risk-sql/
-├── data/
-│ └── sample_1000rows.csv
-├── queries/
-│ ├── 01_portfolio_overview.sql
-│ ├── 02_default_rate_by_grade.sql
-│ ├── 03_concentration_risk.sql
-│ ├── 04_vintage_analysis.sql
-│ ├── 05_borrower_profile_5cs.sql
-│ └── 06_risk_vs_pricing.sql
-└── README.md
-
-
 ## 📌 Key Business Questions
 1. Which risk grades have the highest default rates — and is the portfolio pricing this correctly?
 2. Where is exposure most concentrated, and does this create concentration risk?
@@ -40,18 +25,10 @@ credit-portfolio-risk-sql/
 - **MORTGAGE holders** default less than RENT borrowers within the same grade — collateral quality matters beyond the grade itself
 - **2007–2009 vintages** show significantly elevated default rates, consistent with the Global Financial Crisis credit cycle
 
-## 💡 CFA Concepts Applied
-- **Probability of Default (PD)** — default rate by grade, DTI band, and FICO band
-- **Expected Loss (EL = PD × LGD × EAD)** — dollar loss estimate per grade
-- **5 Cs of Credit** — borrower profile comparison between Fully Paid vs Charged Off loans
-- **Yield Spread Analysis** — interest rate vs default rate across grades and loan terms
-- **Concentration Risk** — exposure % by grade and loan purpose
-- **Vintage Analysis** — default rate tracked by loan issuance year
-
 ## ✅ How to Reproduce
 1. Download the Lending Club dataset from [Kaggle](https://www.kaggle.com/datasets/wordsforthewise/lending-club)
 2. Open **DB Browser for SQLite** → New Database → name it `credit_portfolio.db`
-3. Import CSV: **File → Import → Table from CSV file** (tick "Column names in first line", table name: `loans`)
+3. Import CSV: **File → Import → Table from CSV file** (tick "Column names in first line") — table will be named `accepted_2007_to_2018Q4` automatically
 4. Open any `.sql` file from the `/queries/` folder
 5. Paste into the **Execute SQL** tab and press **F5**
 
