@@ -4,7 +4,7 @@
 -- Description: This script analyses default rates across loan
 --              grades using the Lending Club dataset (2007-2018).
 --              Frameworks applied: Probability of Default (PD),
---              Expected Loss (EL), 5 Cs of Credit (CFA Level I & II)
+--              Expected Loss (EL), 5 Cs of Credit
 -- ============================================================
 
 
