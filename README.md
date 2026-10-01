@@ -12,7 +12,7 @@ To simulate a credit risk analyst's approach to portfolio surveillance: identify
 - Dataset: [Lending Club Loan Data 2007–2018](https://www.kaggle.com/datasets/wordsforthewise/lending-club) via Kaggle
 
 ## 📌 Key Business Questions
-1. Which risk grades have the highest default rates — and is the portfolio pricing this correctly?
+1. Which risk grades have the highest default rates - and is the portfolio pricing this correctly?
 2. Where is exposure most concentrated, and does this create concentration risk?
 3. Which loan cohorts (vintages) performed worst over time?
 4. What separates borrowers who repay from those who default?
@@ -28,7 +28,7 @@ To simulate a credit risk analyst's approach to portfolio surveillance: identify
 ## ✅ How to Reproduce
 1. Download the Lending Club dataset from [Kaggle](https://www.kaggle.com/datasets/wordsforthewise/lending-club)
 2. Open **DB Browser for SQLite** → New Database → name it `credit_portfolio.db`
-3. Import CSV: **File → Import → Table from CSV file** (tick "Column names in first line") — table will be named `accepted_2007_to_2018Q4` automatically
+3. Import CSV: **File → Import → Table from CSV file** (tick "Column names in first line") - table will be named `accepted_2007_to_2018Q4` automatically
 4. Open any `.sql` file from the `/queries/` folder
 5. Paste into the **Execute SQL** tab and press **F5**
 
