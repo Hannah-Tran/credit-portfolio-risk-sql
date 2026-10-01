@@ -1,10 +1,10 @@
 # Credit Portfolio Risk Analysis Using SQL
 
 ## 📊 Project Overview
-This project analyses over 2 million peer-to-peer loans from the Lending Club dataset (2007–2018) to identify key drivers of credit default, assess portfolio concentration risk, and evaluate whether loan pricing adequately compensates for borrower risk. The analysis applies CFA-level credit frameworks — including the 5 Cs of Credit, Probability of Default (PD), and Expected Loss (EL) — implemented entirely in SQL.
+This project analyses over 2 million peer-to-peer loans from the Lending Club dataset (2007 - 2018) to identify key drivers of credit default, assess portfolio concentration risk, and evaluate whether loan pricing adequately compensates for borrower risk. The analysis applies CFA-level credit frameworks - including the 5 Cs of Credit, Probability of Default (PD), and Expected Loss (EL) - implemented entirely in SQL.
 
 ## 🎯 Objective
-To simulate a credit risk analyst's approach to portfolio surveillance: identifying which borrower segments carry the highest default risk, whether the portfolio is over-concentrated in risky grades, and whether interest rates are pricing that risk correctly — presented as a portfolio-ready case study.
+To simulate a credit risk analyst's approach to portfolio surveillance: identifying which borrower segments carry the highest default risk, whether the portfolio is over-concentrated in risky grades, and whether interest rates are pricing that risk correctly - presented as a portfolio-ready case study.
 
 ## 🧰 Tools Used
 - SQL (SQLite via DB Browser for SQLite)
@@ -16,13 +16,13 @@ To simulate a credit risk analyst's approach to portfolio surveillance: identify
 2. Where is exposure most concentrated, and does this create concentration risk?
 3. Which loan cohorts (vintages) performed worst over time?
 4. What separates borrowers who repay from those who default?
-5. What is the Expected Loss by grade — which segment poses the greatest financial risk?
+5. What is the Expected Loss by grade - which segment poses the greatest financial risk?
 
 ## 🔍 Summary of Insights
-- **Grade G loans** default at 30%+, yet interest rate premiums do not fully compensate — indicating under-priced tail risk
-- **Grades B and C** represent over 50% of total portfolio exposure — significant concentration risk in mid-risk borrowers
-- **DTI > 30%** borrowers default at nearly double the rate of those under 10% — capacity to repay is the strongest default signal
-- **MORTGAGE holders** default less than RENT borrowers within the same grade — collateral quality matters beyond the grade itself
+- **Grade G loans** default at 30%+, yet interest rate premiums do not fully compensate - indicating under-priced tail risk
+- **Grades B and C** represent over 50% of total portfolio exposure - significant concentration risk in mid-risk borrowers
+- **DTI > 30%** borrowers default at nearly double the rate of those under 10% - capacity to repay is the strongest default signal
+- **MORTGAGE holders** default less than RENT borrowers within the same grade - collateral quality matters beyond the grade itself
 - **2007–2009 vintages** show significantly elevated default rates, consistent with the Global Financial Crisis credit cycle
 
 ## ✅ How to Reproduce
