@@ -33,9 +33,9 @@ To simulate a credit risk analyst's approach to portfolio surveillance: identify
 5. Paste into the **Execute SQL** tab and press **F5**
 
 ## 💼 Author
-**Hannah (Huong) Tran**
-Financial Analysis
-MSc Banking & Finance with Distinction
-CFA Levels I & II cleared| 
+**Hannah (Huong) Tran** |
+Financial Analysis |
+MSc Banking & Finance with Distinction |
+CFA Levels I & II cleared
 
 [LinkedIn](https://www.linkedin.com/in/huong-hannah/) | [GitHub](https://github.com/Hannah-Tran)
