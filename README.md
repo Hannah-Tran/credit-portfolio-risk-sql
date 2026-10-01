@@ -38,4 +38,4 @@ Financial Analysis
 MSc Banking & Finance with Distinction
 CFA Levels I & II cleared| 
 
-[LinkedIn]((https://www.linkedin.com/in/huong-hannah/)) | [GitHub](https://github.com/Hannah-Tran)
+[LinkedIn](https://www.linkedin.com/in/huong-hannah/) | [GitHub](https://github.com/Hannah-Tran)
